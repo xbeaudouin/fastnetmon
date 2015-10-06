@@ -55,7 +55,7 @@ endif()
 message(STATUS "C++ compilation flags: ${CMAKE_CXX_FLAGS_RELEASE}")
 
 set(HIREDIS_CUSTOM_INSTALL_PATH "/opt/libhiredis_0_13")
-set(LOG4CPP_CUSTOM_INSTALL_PATH "/opt/log4cpp1.1.1")
+#set(LOG4CPP_CUSTOM_INSTALL_PATH "/opt/log4cpp1.1.1")
 set(JSONC_CUSTOM_INSTALL_PATH "/opt/json-c-0.12")
 set(PFRING_CUSTOM_INSTALL_PATH "/opt/pf_ring_6.0.3")
 set(LIBPCAP_CUSTOM_INSTALL_PATH "/opt/libpcap_1.7.4")
@@ -179,7 +179,7 @@ add_library(sflow_plugin STATIC sflow_plugin/sflow_collector.cpp)
 add_library(netflow_plugin STATIC netflow_plugin/netflow_collector.cpp)
 target_link_libraries(netflow_plugin ipfix_rfc)
 
-set(ENABLE_DPI_SUPPORT YES)
+#set(ENABLE_DPI_SUPPORT YES)
 if (ENABLE_DPI_SUPPORT) 
     message(STATUS "We will enable nDPI support")
 
@@ -205,8 +205,8 @@ if (ENABLE_LUA_SUPPORT)
 
     add_definitions(-DENABLE_LUA_HOOKS)
 
-    link_directories("/opt/luajit_2.0.4/lib")
-    include_directories("/opt/luajit_2.0.4/include")
+    #link_directories("/opt/luajit_2.0.4/lib")
+    #include_directories("/opt/luajit_2.0.4/include")
  
     target_link_libraries(netflow_plugin luajit-5.1)
     target_link_libraries(sflow_plugin luajit-5.1)
@@ -398,10 +398,12 @@ endif()
 ### Look for log4cpp
 
 # Try to find log4cpp includes path
-find_path(LOG4CPP_INCLUDES_FOLDER NAMES log4cpp/Appender.hh PATHS "${LOG4CPP_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
+#find_path(LOG4CPP_INCLUDES_FOLDER NAMES log4cpp/Appender.hh PATHS "${LOG4CPP_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
+find_path(LOG4CPP_INCLUDES_FOLDER NAMES log4cpp/Appender.hh PATHS "${LOG4CPP_CUSTOM_INSTALL_PATH}/include" )
 
 # Try to find log4cpp library path
-find_library(LOG4CPP_LIBRARY_PATH NAMES log4cpp PATHS "${LOG4CPP_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
+#find_library(LOG4CPP_LIBRARY_PATH NAMES log4cpp PATHS "${LOG4CPP_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
+find_library(LOG4CPP_LIBRARY_PATH NAMES log4cpp PATHS "${LOG4CPP_CUSTOM_INSTALL_PATH}/lib" )
 
 if (LOG4CPP_INCLUDES_FOLDER AND LOG4CPP_LIBRARY_PATH)
     include_directories(${LOG4CPP_INCLUDES_FOLDER})
@@ -412,8 +414,8 @@ endif()
 
 ### Look for jsonc
 
-find_path(JSONC_INCLUDES_FOLDER NAMES json-c/json.h PATHS "${JSONC_CUSTOM_INSTALL_PATH}/include" NO_DEFAULT_PATH)
-find_library(JSONC_LIBRARY_PATH NAMES json-c PATHS "${JSONC_CUSTOM_INSTALL_PATH}/lib" NO_DEFAULT_PATH)
+find_path(JSONC_INCLUDES_FOLDER NAMES json-c/json.h PATHS "${JSONC_CUSTOM_INSTALL_PATH}/include")
+find_library(JSONC_LIBRARY_PATH NAMES json-c PATHS "${JSONC_CUSTOM_INSTALL_PATH}/lib")
 
 if (JSONC_INCLUDES_FOLDER AND JSONC_LIBRARY_PATH)
     include_directories(${JSONC_INCLUDES_FOLDER}) 
